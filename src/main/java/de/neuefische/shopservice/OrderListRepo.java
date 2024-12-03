@@ -3,8 +3,8 @@ package de.neuefische.shopservice;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderListRepo {
-    private List<Order> orders;
+public class OrderListRepo implements OrderRepo {
+    private final List<Order> orders;
     
     public OrderListRepo() {
         this.orders = new ArrayList<Order>();

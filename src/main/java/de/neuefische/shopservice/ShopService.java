@@ -1,7 +1,7 @@
 package de.neuefische.shopservice;
 
 public class ShopService {
-    private final OrderListRepo olr;
+    private final OrderRepo olr;
     private final ProductRepo pr;
 
     public ShopService() {
@@ -9,7 +9,12 @@ public class ShopService {
         this.pr = new ProductRepo();
     }
 
-    public OrderListRepo getOlr() {
+    public ShopService(OrderRepo olr) {
+        this.olr = olr;
+        this.pr = new ProductRepo();
+    }
+
+    public OrderRepo getOlr() {
         return olr;
     }
 
