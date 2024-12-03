@@ -15,10 +15,10 @@ public class ShopServiceTest {
     void placeOrder_addsOrderToOrderList() {
         ShopService shop = new ShopService();
         Product toothpaste = new Product(1, "Toothpaste", BigDecimal.valueOf(1.99));
-        shop.getPr().add(toothpaste);
+        shop.addProduct(toothpaste);
         Product floss = new Product(2, "Floss", BigDecimal.valueOf(1.29));
-        shop.getPr().add(floss);
-        shop.getPr().add(new Product(3, "TP", BigDecimal.valueOf(1.99)));
+        shop.addProduct(floss);
+        shop.addProduct(new Product(3, "TP", BigDecimal.valueOf(1.99)));
         Order order = new Order(1, new ArrayList<Product>(List.of(toothpaste, floss)));
         BigDecimal payable = shop.placeOrder(order);
         Order placedOrder = shop.getOlr().getSingle(1);
@@ -30,10 +30,10 @@ public class ShopServiceTest {
     void placeOrder_addsOrderToOrderMap() {
         ShopService shop = new ShopService(new OrderMapRepo());
         Product toothpaste = new Product(1, "Toothpaste", BigDecimal.valueOf(1.99));
-        shop.getPr().add(toothpaste);
+        shop.addProduct(toothpaste);
         Product floss = new Product(2, "Floss", BigDecimal.valueOf(1.29));
-        shop.getPr().add(floss);
-        shop.getPr().add(new Product(3, "TP", BigDecimal.valueOf(1.99)));
+        shop.addProduct(floss);
+        shop.addProduct(new Product(3, "TP", BigDecimal.valueOf(1.99)));
         Order order = new Order(1, new ArrayList<Product>(List.of(toothpaste, floss)));
         BigDecimal payable = shop.placeOrder(order);
         Order placedOrder = shop.getOlr().getSingle(1);
@@ -45,9 +45,9 @@ public class ShopServiceTest {
     void placeOrder_withMissingProduct_removesProductFromOrder() {
         ShopService shop = new ShopService();
         Product toothpaste = new Product(1, "Toothpaste", BigDecimal.valueOf(1.99));
-        shop.getPr().add(toothpaste);
+        shop.addProduct(toothpaste);
         Product floss = new Product(2, "Floss", BigDecimal.valueOf(1.29));
-        shop.getPr().add(new Product(3, "TP", BigDecimal.valueOf(1.99)));
+        shop.addProduct(new Product(3, "TP", BigDecimal.valueOf(1.99)));
         Order order = new Order(1, new ArrayList<Product>(List.of(toothpaste, floss)));
         BigDecimal payable = shop.placeOrder(order);
         Order placedOrder = shop.getOlr().getSingle(1);

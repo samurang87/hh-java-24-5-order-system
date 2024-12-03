@@ -16,12 +16,13 @@ public class ShopService {
         this.pr = new ProductRepo();
     }
 
-    public OrderRepo getOlr() {
-        return olr;
+    public ShopService(ProductRepo pr) {
+        this.olr = new OrderListRepo();
+        this.pr = pr;
     }
 
-    public ProductRepo getPr() {
-        return pr;
+    public OrderRepo getOlr() {
+        return olr;
     }
 
     public BigDecimal placeOrder(Order order) {
@@ -33,5 +34,9 @@ public class ShopService {
         }
         olr.add(order);
         return order.totalPrice();
+    }
+
+    public void addProduct(Product product) {
+        pr.add(product);
     }
 }
