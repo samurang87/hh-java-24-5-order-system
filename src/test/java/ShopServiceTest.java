@@ -20,9 +20,10 @@ public class ShopServiceTest {
         shop.getPr().add(floss);
         shop.getPr().add(new Product(3, "TP", BigDecimal.valueOf(1.99)));
         Order order = new Order(1, new ArrayList<Product>(List.of(toothpaste, floss)));
-        shop.placeOrder(order);
+        BigDecimal payable = shop.placeOrder(order);
         Order placedOrder = shop.getOlr().getSingle(1);
         Assertions.assertEquals(2, placedOrder.products().size());
+        Assertions.assertEquals(BigDecimal.valueOf(3.28), payable);
     }
 
     @Test
@@ -34,9 +35,10 @@ public class ShopServiceTest {
         shop.getPr().add(floss);
         shop.getPr().add(new Product(3, "TP", BigDecimal.valueOf(1.99)));
         Order order = new Order(1, new ArrayList<Product>(List.of(toothpaste, floss)));
-        shop.placeOrder(order);
+        BigDecimal payable = shop.placeOrder(order);
         Order placedOrder = shop.getOlr().getSingle(1);
         Assertions.assertEquals(2, placedOrder.products().size());
+        Assertions.assertEquals(BigDecimal.valueOf(3.28), payable);
     }
 
     @Test
@@ -47,8 +49,9 @@ public class ShopServiceTest {
         Product floss = new Product(2, "Floss", BigDecimal.valueOf(1.29));
         shop.getPr().add(new Product(3, "TP", BigDecimal.valueOf(1.99)));
         Order order = new Order(1, new ArrayList<Product>(List.of(toothpaste, floss)));
-        shop.placeOrder(order);
+        BigDecimal payable = shop.placeOrder(order);
         Order placedOrder = shop.getOlr().getSingle(1);
         Assertions.assertEquals(1, placedOrder.products().size());
+        Assertions.assertEquals(BigDecimal.valueOf(1.99), payable);
     }
 }

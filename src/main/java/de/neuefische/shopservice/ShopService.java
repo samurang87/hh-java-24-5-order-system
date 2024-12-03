@@ -1,5 +1,7 @@
 package de.neuefische.shopservice;
 
+import java.math.BigDecimal;
+
 public class ShopService {
     private final OrderRepo olr;
     private final ProductRepo pr;
@@ -22,7 +24,7 @@ public class ShopService {
         return pr;
     }
 
-    public void placeOrder(Order order) {
+    public BigDecimal placeOrder(Order order) {
         for (Product product : order.products()) {
             if (!pr.getAll().contains(product)) {
                 System.out.println(product.name() + " is not available");
@@ -30,5 +32,6 @@ public class ShopService {
             }
         }
         olr.add(order);
+        return order.totalPrice();
     }
 }
