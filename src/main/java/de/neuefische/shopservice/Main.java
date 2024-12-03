@@ -5,16 +5,24 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String RED = "\u001B[31m";
+    public static final String GREEN = "\u001B[32m";
+    public static final String CYAN = "\u001B[36m";
+
     public static void main(String[] args) {
         ShopService shopService = new ShopService(initProductRepo());
 
         System.out.println("Hello! We have these products in the shop today");
-        System.out.println(shopService.listProducts());
+        for (Product item: shopService.listProducts()) {
+            System.out.println(CYAN + item + ANSI_RESET);
+        };
 
         Scanner scanner = new Scanner(System.in);
         ArrayList<String> cart = new ArrayList<>();
         System.out.println("Would you like to add an item to your cart? (y/n) ");
-        String nextItem = scanner.nextLine();;
+        String nextItem = scanner.nextLine().toLowerCase();;
         while (true) {
             if (nextItem.equals("y")) {
                 System.out.println("What would you like to buy? ");
@@ -22,17 +30,17 @@ public class Main {
             } else if (nextItem.equals("n")) {
                 break;
             } else {
-                System.out.println("Invalid input. Please enter 'y' or 'n'.");
+                System.out.println(RED + "Invalid input. Please enter 'y' or 'n'." + ANSI_RESET);
             }
             System.out.println("Would you like to add another item? (y/n) ");
-            nextItem = scanner.nextLine();
+            nextItem = scanner.nextLine().toLowerCase();;
         }
         BigDecimal totalPrice = shopService.placeOrder(cart);
         if (totalPrice.equals(BigDecimal.ZERO)) {
-            System.out.println("Alright, no shopping for you today it seems \uD83D\uDC4D");
+            System.out.println(GREEN + "Alright, no shopping for you today it seems \uD83D\uDC4D" + ANSI_RESET);
             return;
         }
-        System.out.println("Please pay " + totalPrice + " € \uD83D\uDCB8");
+        System.out.println(GREEN +"Please pay " + totalPrice + " € \uD83D\uDCB8" + ANSI_RESET);
     }
 
     private static ProductRepo initProductRepo() {
