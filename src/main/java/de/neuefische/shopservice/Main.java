@@ -1,8 +1,7 @@
 package de.neuefische.shopservice;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.List;
 
 public class Main {
 
@@ -12,35 +11,14 @@ public class Main {
     public static final String CYAN = "\u001B[36m";
 
     public static void main(String[] args) {
-        ShopService shopService = new ShopService(initProductRepo());
+        ShopService shopService = new ShopService(new OrderMapRepo(), initProductRepo(), new IdService());
 
-        System.out.println("Hello! We have these products in the shop today");
-        for (Product item: shopService.listProducts()) {
-            System.out.println(CYAN + item + ANSI_RESET);
-        };
+        // Define three concrete orders and add them all to the ShopService.
+        shopService.placeOrder(List.of("Toothpaste", "Floss"));
+        shopService.placeOrder(List.of("Nail Polish"));
+        shopService.placeOrder(List.of("TP", "TP"));
 
-        Scanner scanner = new Scanner(System.in);
-        ArrayList<String> cart = new ArrayList<>();
-        System.out.println("Would you like to add an item to your cart? (y/n) ");
-        String nextItem = scanner.nextLine().toLowerCase();;
-        while (true) {
-            if (nextItem.equals("y")) {
-                System.out.println("What would you like to buy? ");
-                cart.add(scanner.nextLine());
-            } else if (nextItem.equals("n")) {
-                break;
-            } else {
-                System.out.println(RED + "Invalid input. Please enter 'y' or 'n'." + ANSI_RESET);
-            }
-            System.out.println("Would you like to add another item? (y/n) ");
-            nextItem = scanner.nextLine().toLowerCase();;
-        }
-        BigDecimal totalPrice = shopService.placeOrder(cart);
-        if (totalPrice.equals(BigDecimal.ZERO)) {
-            System.out.println(GREEN + "Alright, no shopping for you today it seems \uD83D\uDC4D" + ANSI_RESET);
-            return;
-        }
-        System.out.println(GREEN +"Please pay " + totalPrice + " € \uD83D\uDCB8" + ANSI_RESET);
+        System.out.println(shopService.listOrders());
     }
 
     private static ProductRepo initProductRepo() {
