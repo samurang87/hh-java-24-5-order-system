@@ -1,6 +1,7 @@
 package de.neuefische.shopservice;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class OrderMapRepo implements OrderRepo {
 
@@ -19,6 +20,20 @@ public class OrderMapRepo implements OrderRepo {
                 .stream()
                 .filter(order -> order.status().equals(status))
                 .toList();
+    }
+
+    public Map<OrderStatus, Order> getOldestOrderPerStatus() {
+        return orders.values().stream()
+                .collect(Collectors.groupingBy(
+                        Order::status,
+                        Collectors.minBy(Comparator.comparing(Order::timestamp))
+                ))
+                .entrySet().stream()
+                .filter(entry -> entry.getValue().isPresent())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().get()
+                ));
     }
 
     public Order getSingle(UUID id) {

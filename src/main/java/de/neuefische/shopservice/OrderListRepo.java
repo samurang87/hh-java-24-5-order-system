@@ -1,8 +1,7 @@
 package de.neuefische.shopservice;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class OrderListRepo implements OrderRepo {
     private final List<Order> orders;
@@ -24,6 +23,20 @@ public class OrderListRepo implements OrderRepo {
                 .stream()
                 .filter(order -> order.status().equals(status))
                 .toList();
+    }
+
+    public Map<OrderStatus, Order> getOldestOrderPerStatus() {
+        return orders.stream()
+                .collect(Collectors.groupingBy(
+                        Order::status,
+                        Collectors.minBy(Comparator.comparing(Order::timestamp))
+                ))
+                .entrySet().stream()
+                .filter(entry -> entry.getValue().isPresent())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().get()
+                ));
     }
 
     public void add(Order order) {
