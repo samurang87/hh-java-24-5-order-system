@@ -2,6 +2,7 @@ package de.neuefische.shopservice;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class OrderListRepo implements OrderRepo {
     private final List<Order> orders;
@@ -33,9 +34,9 @@ public class OrderListRepo implements OrderRepo {
         this.orders.remove(order);
     }
 
-    public Order getSingle(int id) {
+    public Order getSingle(UUID id) {
         return this.orders.stream()
-                .filter(order -> id == order.id())
+                .filter(order -> id.equals(order.id()))
                 .findFirst()
                 .orElse(null);
     }

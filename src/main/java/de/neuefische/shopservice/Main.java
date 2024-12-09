@@ -11,7 +11,7 @@ public class Main {
     public static final String CYAN = "\u001B[36m";
 
     public static void main(String[] args) {
-        ShopService shopService = new ShopService(initProductRepo());
+        ShopService shopService = new ShopService(new OrderMapRepo(), initProductRepo(), new IdService());
 
         // Define three concrete orders and add them all to the ShopService.
         shopService.placeOrder(List.of("Toothpaste", "Floss"));

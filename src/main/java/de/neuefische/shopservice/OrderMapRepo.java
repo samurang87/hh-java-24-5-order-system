@@ -1,16 +1,13 @@
 package de.neuefische.shopservice;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class OrderMapRepo implements OrderRepo {
 
-    private Map<Integer, Order> orders;
+    private Map<UUID, Order> orders;
 
     public OrderMapRepo() {
-        this.orders = new HashMap<Integer, Order>();
+        this.orders = new HashMap<UUID, Order>();
     }
 
     public List<Order> getAll() {
@@ -24,7 +21,7 @@ public class OrderMapRepo implements OrderRepo {
                 .toList();
     }
 
-    public Order getSingle(int id) {
+    public Order getSingle(UUID id) {
         return orders.get(id);
     }
 

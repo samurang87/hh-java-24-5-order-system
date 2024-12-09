@@ -7,15 +7,16 @@ import java.time.Clock;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
-public record Order(int id, @With List<Product> products, @With OrderStatus status, @With Instant timestamp) {
+public record Order(UUID id, @With List<Product> products, @With OrderStatus status, @With Instant timestamp) {
 
-    public Order(int id, List<Product> products) {
+    public Order(UUID id, List<Product> products) {
         this(id, products, OrderStatus.PROCESSING, Instant.now(Clock.systemDefaultZone()));
     }
 
-    public Order(int id, List<Product> products, Instant orderTimestamp) {
+    public Order(UUID id, List<Product> products, Instant orderTimestamp) {
         this(id, products, OrderStatus.PROCESSING, orderTimestamp);
     }
 

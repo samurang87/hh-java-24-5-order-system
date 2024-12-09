@@ -1,6 +1,7 @@
 package de.neuefische.shopservice;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface OrderRepo {
 
@@ -8,7 +9,7 @@ public interface OrderRepo {
 
     List<Order> getAllByStatus(OrderStatus status);
 
-    Order getSingle(int id);
+    Order getSingle(UUID id);
 
     void add(Order order);
 

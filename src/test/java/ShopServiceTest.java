@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class ShopServiceTest {
 
@@ -22,11 +23,12 @@ public class ShopServiceTest {
 
         Clock fixedClock = Clock.fixed(Instant.parse("2025-01-01T10:00:00Z"), ZoneId.of("UTC"));
 
-        Order order = new Order(1, new ArrayList<Product>(List.of(toothpaste, floss)), Instant.now(fixedClock));
+        UUID id1 = UUID.randomUUID();
+        Order order = new Order(id1, new ArrayList<Product>(List.of(toothpaste, floss)), Instant.now(fixedClock));
 
         BigDecimal payable = shop.addOrder(order);
 
-        Order placedOrder = shop.getOlr().getSingle(1);
+        Order placedOrder = shop.getOlr().getSingle(id1);
         Assertions.assertEquals(2, placedOrder.products().size());
         Assertions.assertEquals(BigDecimal.valueOf(3.28), payable);
         Assertions.assertEquals(Instant.parse("2025-01-01T10:00:00Z"), order.timestamp());
@@ -40,9 +42,10 @@ public class ShopServiceTest {
         Product floss = new Product(2, "Floss", BigDecimal.valueOf(1.29));
         shop.addProduct(floss);
         shop.addProduct(new Product(3, "TP", BigDecimal.valueOf(1.99)));
-        Order order = new Order(1, new ArrayList<Product>(List.of(toothpaste, floss)));
+        UUID id1 = UUID.randomUUID();
+        Order order = new Order(id1, new ArrayList<Product>(List.of(toothpaste, floss)));
         BigDecimal payable = shop.addOrder(order);
-        Order placedOrder = shop.getOlr().getSingle(1);
+        Order placedOrder = shop.getOlr().getSingle(id1);
         Assertions.assertEquals(2, placedOrder.products().size());
         Assertions.assertEquals(BigDecimal.valueOf(3.28), payable);
     }
@@ -54,7 +57,7 @@ public class ShopServiceTest {
         shop.addProduct(toothpaste);
         Product floss = new Product(2, "Floss", BigDecimal.valueOf(1.29));
         shop.addProduct(new Product(3, "TP", BigDecimal.valueOf(1.99)));
-        Order order = new Order(1, new ArrayList<Product>(List.of(toothpaste, floss)));
+        Order order = new Order(UUID.randomUUID(), new ArrayList<Product>(List.of(toothpaste, floss)));
         Assertions.assertThrows(ProductNotFoundException.class, () -> shop.addOrder(order));
     }
 
@@ -80,10 +83,12 @@ public class ShopServiceTest {
         shop.addProduct(toothpaste);
         Product floss = new Product(2, "Floss", BigDecimal.valueOf(1.29));
         shop.addProduct(floss);
-        Order order = new Order(1, new ArrayList<Product>(List.of(toothpaste, floss)));
+
+        UUID id1 = UUID.randomUUID();
+        Order order = new Order(id1, new ArrayList<Product>(List.of(toothpaste, floss)));
         shop.addOrder(order);
 
-        Order orderWithNewStatus = shop.updateOrder(1, OrderStatus.COMPLETED);
+        Order orderWithNewStatus = shop.updateOrder(id1, OrderStatus.COMPLETED);
         Assertions.assertEquals(OrderStatus.COMPLETED, orderWithNewStatus.status());
     }
 }

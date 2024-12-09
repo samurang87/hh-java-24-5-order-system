@@ -6,26 +6,37 @@ import lombok.RequiredArgsConstructor;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Getter
 public class ShopService {
     private final OrderRepo olr;
     private final ProductRepo pr;
+    private final IdService ids;
 
     public ShopService() {
         this.olr = new OrderListRepo();
         this.pr = new ProductRepo();
+        this.ids = new IdService();
     }
 
     public ShopService(OrderRepo olr) {
         this.olr = olr;
         this.pr = new ProductRepo();
+        this.ids = new IdService();
     }
 
     public ShopService(ProductRepo pr) {
         this.olr = new OrderListRepo();
         this.pr = pr;
+        this.ids = new IdService();
+    }
+
+    public ShopService(OrderRepo olr, ProductRepo pr) {
+        this.olr = olr;
+        this.pr = pr;
+        this.ids = new IdService();
     }
 
     // Orders
@@ -50,12 +61,11 @@ public class ShopService {
                 finalCart.add(availableProduct);
             }
         }
-        int randomId = (int) (Math.random() * 1000);
-        Order order = new Order(randomId, finalCart);
+        Order order = new Order(ids.generateUUID(), finalCart);
         return addOrder(order);
     }
 
-    public Order getOrder(int id) {
+    public Order getOrder(UUID id) {
         return olr.getSingle(id);
     }
 
@@ -63,7 +73,7 @@ public class ShopService {
         return olr.getAll();
     }
 
-    public Order updateOrder(int id, OrderStatus status) {
+    public Order updateOrder(UUID id, OrderStatus status) {
         Order order = getOrder(id);
         return order.withStatus(status);
     }
