@@ -1,7 +1,4 @@
-import de.neuefische.shopservice.Order;
-import de.neuefische.shopservice.OrderMapRepo;
-import de.neuefische.shopservice.Product;
-import de.neuefische.shopservice.ShopService;
+import de.neuefische.shopservice.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -42,17 +39,14 @@ public class ShopServiceTest {
     }
 
     @Test
-    void addOrder_withMissingProduct_removesProductFromOrder() {
+    void addOrder_withMissingProduct_throwsException() {
         ShopService shop = new ShopService();
         Product toothpaste = new Product(1, "Toothpaste", BigDecimal.valueOf(1.99));
         shop.addProduct(toothpaste);
         Product floss = new Product(2, "Floss", BigDecimal.valueOf(1.29));
         shop.addProduct(new Product(3, "TP", BigDecimal.valueOf(1.99)));
         Order order = new Order(1, new ArrayList<Product>(List.of(toothpaste, floss)));
-        BigDecimal payable = shop.addOrder(order);
-        Order placedOrder = shop.getOlr().getSingle(1);
-        Assertions.assertEquals(1, placedOrder.products().size());
-        Assertions.assertEquals(BigDecimal.valueOf(1.99), payable);
+        Assertions.assertThrows(ProductNotFoundException.class, () -> shop.addOrder(order));
     }
 
     @Test

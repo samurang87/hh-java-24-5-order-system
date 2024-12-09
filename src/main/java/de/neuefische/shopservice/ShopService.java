@@ -27,11 +27,10 @@ public class ShopService {
         return olr;
     }
 
-    public BigDecimal addOrder(Order order) {
+    public BigDecimal addOrder(Order order) throws ProductNotFoundException {
         for (Product product : order.products()) {
             if (!pr.getAll().contains(product)) {
-                System.out.println(product.name() + " is not available");
-                order = order.withoutProduct(product);
+                throw new ProductNotFoundException(product.name() + " not available");
             }
         }
         olr.add(order);
