@@ -63,4 +63,18 @@ public class ShopServiceTest {
         Assertions.assertEquals(3, placedOrder.products().size());
         Assertions.assertEquals(BigDecimal.valueOf(5.27), payable);
     }
+
+    @Test
+    void updateOrder_updatesOrderWithNewStatus() {
+        ShopService shop = new ShopService(new OrderMapRepo());
+        Product toothpaste = new Product(1, "Toothpaste", BigDecimal.valueOf(1.99));
+        shop.addProduct(toothpaste);
+        Product floss = new Product(2, "Floss", BigDecimal.valueOf(1.29));
+        shop.addProduct(floss);
+        Order order = new Order(1, new ArrayList<Product>(List.of(toothpaste, floss)));
+        shop.addOrder(order);
+
+        Order orderWithNewStatus = shop.updateOrder(1, OrderStatus.COMPLETED);
+        Assertions.assertEquals(OrderStatus.COMPLETED, orderWithNewStatus.status());
+    }
 }

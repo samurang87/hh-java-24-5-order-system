@@ -23,6 +23,8 @@ public class ShopService {
         this.pr = pr;
     }
 
+    // Orders
+
     public OrderRepo getOlr() {
         return olr;
     }
@@ -59,6 +61,13 @@ public class ShopService {
     public List<Order> listOrders() {
         return olr.getAll();
     }
+
+    public Order updateOrder(int id, OrderStatus status) {
+        Order order = getOrder(id);
+        return order.withStatus(status);
+    }
+
+    // Products
 
     public void addProduct(Product product) {
         pr.add(product);
