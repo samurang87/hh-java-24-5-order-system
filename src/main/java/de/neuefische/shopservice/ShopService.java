@@ -1,9 +1,14 @@
 package de.neuefische.shopservice;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
+@Getter
 public class ShopService {
     private final OrderRepo olr;
     private final ProductRepo pr;
@@ -24,10 +29,6 @@ public class ShopService {
     }
 
     // Orders
-
-    public OrderRepo getOlr() {
-        return olr;
-    }
 
     public BigDecimal addOrder(Order order) throws ProductNotFoundException {
         for (Product product : order.products()) {
