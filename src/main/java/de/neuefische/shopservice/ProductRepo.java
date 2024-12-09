@@ -3,6 +3,7 @@ package de.neuefische.shopservice;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class ProductRepo {
     private final List<Product> products;
@@ -23,11 +24,10 @@ public class ProductRepo {
         this.products.remove(product);
     }
 
-    public Product getSingle(int id) {
+    public Optional<Product> getSingle(int id) {
         return this.products.stream()
                 .filter(product -> id == product.id())
-                .findFirst()
-                .orElse(null);
+                .findFirst();
     }
 
     public Product getSingle(String name) {

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 
 public class ProductRepoTest {
@@ -32,7 +33,13 @@ public class ProductRepoTest {
         Product toothpaste = new Product(1, "Toothpaste", BigDecimal.valueOf(1.99));
         pr.add(toothpaste);
         pr.add(new Product(2, "Floss", BigDecimal.valueOf(1.29)));
-        Assertions.assertEquals(pr.getSingle(1), toothpaste);
+        Assertions.assertEquals(pr.getSingle(1), Optional.of(toothpaste));
+    }
+
+    @Test
+    void getSingle_withNotFoundID_returnsEmptyOptional() {
+        ProductRepo pr = new ProductRepo();
+        Assertions.assertEquals(pr.getSingle(1), Optional.empty());
     }
 
     @Test
