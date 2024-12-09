@@ -54,12 +54,13 @@ public class OrderMapRepoTest {
         OrderMapRepo olr = new OrderMapRepo();
         Order order1 = new Order(UUID.randomUUID(), products1);
         olr.add(order1);
-        olr.add(new Order(UUID.randomUUID(), products2).withStatus(OrderStatus.COMPLETED));
+        Order order2 = new Order(UUID.randomUUID(), products2).withStatus(OrderStatus.COMPLETED);
+        olr.add(order2);
         Order order3 = new Order(UUID.randomUUID(), products1);
         olr.add(order3);
 
-        List<Order> res = olr.getAllByStatus(OrderStatus.PROCESSING);
-        List<Order> exp = new ArrayList<Order>(List.of(order1, order3));
+        List<Order> res = olr.getAllByStatus(OrderStatus.COMPLETED);
+        List<Order> exp = new ArrayList<Order>(List.of(order2));
         Assertions.assertEquals(exp, res);
     }
 }
