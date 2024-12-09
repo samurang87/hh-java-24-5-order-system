@@ -3,6 +3,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,11 +19,17 @@ public class ShopServiceTest {
         Product floss = new Product(2, "Floss", BigDecimal.valueOf(1.29));
         shop.addProduct(floss);
         shop.addProduct(new Product(3, "TP", BigDecimal.valueOf(1.99)));
-        Order order = new Order(1, new ArrayList<Product>(List.of(toothpaste, floss)));
+
+        Clock fixedClock = Clock.fixed(Instant.parse("2025-01-01T10:00:00Z"), ZoneId.of("UTC"));
+
+        Order order = new Order(1, new ArrayList<Product>(List.of(toothpaste, floss)), Instant.now(fixedClock));
+
         BigDecimal payable = shop.addOrder(order);
+
         Order placedOrder = shop.getOlr().getSingle(1);
         Assertions.assertEquals(2, placedOrder.products().size());
         Assertions.assertEquals(BigDecimal.valueOf(3.28), payable);
+        Assertions.assertEquals(Instant.parse("2025-01-01T10:00:00Z"), order.timestamp());
     }
 
     @Test
