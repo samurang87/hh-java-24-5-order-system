@@ -1,6 +1,4 @@
-import de.neuefische.shopservice.Order;
-import de.neuefische.shopservice.OrderListRepo;
-import de.neuefische.shopservice.Product;
+import de.neuefische.shopservice.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -42,5 +40,21 @@ public class OrderListRepoTest {
         olr.add(order1);
         olr.add(new Order(2, products2));
         Assertions.assertEquals(olr.getSingle(1), order1);
+    }
+
+    @Test
+    void getsOrdersFilteredByStatus() {
+        ArrayList<Product> products1 = new ArrayList<Product>(List.of(new Product(1, "Toothpaste", BigDecimal.valueOf(1.99)), new Product(2, "Floss", BigDecimal.valueOf(1.29))));
+        ArrayList<Product> products2 = new ArrayList<Product>(List.of(new Product(3, "Laundry Detergent", BigDecimal.valueOf(2.99)), new Product(4, "Deo", BigDecimal.valueOf(3.99))));
+        OrderMapRepo olr = new OrderMapRepo();
+        Order order1 = new Order(1, products1);
+        olr.add(order1);
+        olr.add(new Order(2, products2).withStatus(OrderStatus.COMPLETED));
+        Order order3 = new Order(3, products1);
+        olr.add(order3);
+
+        List<Order> res = olr.getAllByStatus(OrderStatus.PROCESSING);
+        List<Order> exp = new ArrayList<Order>(List.of(order1, order3));
+        Assertions.assertEquals(exp, res);
     }
 }

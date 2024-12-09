@@ -6,6 +6,8 @@ public interface OrderRepo {
 
     List<Order> getAll();
 
+    List<Order> getAllByStatus(OrderStatus status);
+
     Order getSingle(int id);
 
     void add(Order order);

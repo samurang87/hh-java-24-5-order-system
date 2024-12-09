@@ -18,6 +18,13 @@ public class OrderListRepo implements OrderRepo {
         return orders;
     }
 
+    public List<Order> getAllByStatus(OrderStatus status) {
+        return orders
+                .stream()
+                .filter(order -> order.status().equals(status))
+                .toList();
+    }
+
     public void add(Order order) {
         this.orders.add(order);
     }
